@@ -328,24 +328,61 @@ function (_Component) {
 
     _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__["default"])(this, (_getPrototypeOf2 = Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__["default"])(ShowPending)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_8__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6__["default"])(_this), "state", {
+      approved: null,
+      message: ''
+    });
+
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_8__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6__["default"])(_this), "approveConnection",
     /*#__PURE__*/
     function () {
       var _ref = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(
       /*#__PURE__*/
       _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
+        var accounts, mailbox;
         return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 event.preventDefault();
+                console.log("approving COnnection");
+                _context.prev = 2;
+                _context.next = 5;
+                return _ethereum_web3__WEBPACK_IMPORTED_MODULE_11__["default"].eth.getAccounts();
 
-              case 1:
+              case 5:
+                accounts = _context.sent;
+                mailbox = Object(_ethereum_mailBox__WEBPACK_IMPORTED_MODULE_12__["default"])(_this.props.mailBoxAddress);
+                _context.next = 9;
+                return mailbox.methods.approveConnection().send({
+                  from: accounts[0]
+                });
+
+              case 9:
+                _this.setState({
+                  approved: true
+                });
+
+                Router.pushRoute("/mailBox/".concat(_this.props.mailBoxAddress, "/manage"));
+                _context.next = 17;
+                break;
+
+              case 13:
+                _context.prev = 13;
+                _context.t0 = _context["catch"](2);
+
+                _this.setState({
+                  errorMessage: _context.t0.message
+                });
+
+                console.log(_context.t0.message);
+
+              case 17:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee);
+        }, _callee, null, [[2, 13]]);
       }));
 
       return function (_x) {
@@ -359,18 +396,49 @@ function (_Component) {
       var _ref2 = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(
       /*#__PURE__*/
       _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(event) {
+        var accounts, mailbox;
         return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 event.preventDefault();
+                _context2.prev = 1;
+                _context2.next = 4;
+                return _ethereum_web3__WEBPACK_IMPORTED_MODULE_11__["default"].eth.getAccounts();
 
-              case 1:
+              case 4:
+                accounts = _context2.sent;
+                mailbox = Object(_ethereum_mailBox__WEBPACK_IMPORTED_MODULE_12__["default"])(_this.props.mailBoxAddress);
+                _context2.next = 8;
+                return mailbox.methods.disapproveConnection().send({
+                  from: accounts[0]
+                });
+
+              case 8:
+                _this.setState({
+                  approved: false
+                });
+
+                Router.pushRoute("/mailBox/".concat(_this.props.mailBoxAddress, "/manage"));
+                _context2.next = 16;
+                break;
+
+              case 12:
+                _context2.prev = 12;
+                _context2.t0 = _context2["catch"](1);
+
+                _this.setState({
+                  errorMessage: _context2.t0.message
+                });
+
+                console.log(_context2.t0.message);
+
+              case 16:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2);
+        }, _callee2, null, [[1, 12]]);
       }));
 
       return function (_x2) {
@@ -1091,6 +1159,45 @@ function (_Component) {
       });
     });
 
+    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_8__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6__["default"])(_this), "deleteMessages",
+    /*#__PURE__*/
+    function () {
+      var _ref = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(
+      /*#__PURE__*/
+      _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
+        return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                event.preventDefault();
+                _context.prev = 1;
+                _context.next = 4;
+                return myMailBox.methods.deleteMessage().send({
+                  from: accounts[0]
+                });
+
+              case 4:
+                _context.next = 9;
+                break;
+
+              case 6:
+                _context.prev = 6;
+                _context.t0 = _context["catch"](1);
+                console.log(_context.t0.message);
+
+              case 9:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[1, 6]]);
+      }));
+
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }());
+
     return _this;
   }
 
@@ -1127,10 +1234,17 @@ function (_Component) {
         raised: true,
         color: "orange"
       }, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("h5", null, "User Name: ", this.props.userName, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("small", null, this.props.me)), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("h5", null, "MailBox Address: ", react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("small", null, this.props.mailBoxAddress)), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("h5", null, "Number of Messages: ", this.props.numMessages), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("h5", null, "My Public Key: ", react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("small", null, this.props.myPublicKey)), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("h5", null, "Number of Trusted Connections: ", this.props.trustedConnections.length), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(_components_pendingConnection__WEBPACK_IMPORTED_MODULE_17__["default"], {
+        mailBoxAddress: this.props.mailBoxAddress,
         pendingTrustedMailboxes: this.props.pendingTrustedMailboxes,
         pendingTrustedPublicKeys: this.props.pendingTrustedPublicKeys,
         pendingTrustedConnections: this.props.pendingTrustedConnections
       })), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(semantic_ui_react__WEBPACK_IMPORTED_MODULE_12__["Segment"], {
+        raised: true,
+        color: "black"
+      }, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("h1", null, "Delete Oldest Message"), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(semantic_ui_react__WEBPACK_IMPORTED_MODULE_12__["Button"], {
+        primary: true,
+        onClick: this.deleteMessages
+      }, "Delete")), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(semantic_ui_react__WEBPACK_IMPORTED_MODULE_12__["Segment"], {
         raised: true,
         color: "purple"
       }, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("h1", null, "Encrypted Inbox"), this.renderMessages()), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(semantic_ui_react__WEBPACK_IMPORTED_MODULE_12__["Segment"], {
@@ -1185,115 +1299,116 @@ function (_Component) {
     value: function () {
       var _getInitialProps = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(
       /*#__PURE__*/
-      _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(props) {
+      _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(props) {
         var myMailBox, mailBoxAddress, userName, myPublicKey, me, numMessages, trustedConnections, trustedMailBoxes, accounts, pendingTrustedMailboxes, pendingTrustedConnections, pendingTrustedPublicKeys, myTrustedKeys, i, key, messages, message, managerLogIn;
-        return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 myMailBox = Object(_ethereum_mailBox__WEBPACK_IMPORTED_MODULE_11__["default"])(props.query.address);
                 mailBoxAddress = props.query.address;
-                _context.next = 4;
+                _context2.next = 4;
                 return myMailBox.methods.userName().call();
 
               case 4:
-                userName = _context.sent;
-                _context.next = 7;
+                userName = _context2.sent;
+                _context2.next = 7;
                 return myMailBox.methods.publicKey().call();
 
               case 7:
-                myPublicKey = _context.sent;
-                _context.next = 10;
+                myPublicKey = _context2.sent;
+                _context2.next = 10;
                 return myMailBox.methods.me().call();
 
               case 10:
-                me = _context.sent;
-                _context.next = 13;
+                me = _context2.sent;
+                _context2.next = 13;
                 return myMailBox.methods.numberOfMessages().call();
 
               case 13:
-                numMessages = _context.sent;
-                _context.next = 16;
+                numMessages = _context2.sent;
+                _context2.next = 16;
                 return myMailBox.methods.getMyTrustedConnections().call();
 
               case 16:
-                trustedConnections = _context.sent;
-                _context.next = 19;
+                trustedConnections = _context2.sent;
+                _context2.next = 19;
                 return myMailBox.methods.getMyTrustedMailBoxes().call();
 
               case 19:
-                trustedMailBoxes = _context.sent;
-                _context.next = 22;
+                trustedMailBoxes = _context2.sent;
+                _context2.next = 22;
                 return _ethereum_web3__WEBPACK_IMPORTED_MODULE_14__["default"].eth.getAccounts();
 
               case 22:
-                accounts = _context.sent;
-                _context.next = 25;
+                accounts = _context2.sent;
+                _context2.next = 25;
                 return myMailBox.methods.pendingTrustedMailboxes().call();
 
               case 25:
-                pendingTrustedMailboxes = _context.sent;
-                _context.next = 28;
+                pendingTrustedMailboxes = _context2.sent;
+                _context2.next = 28;
                 return myMailBox.methods.pendingTrustedConnections().call();
 
               case 28:
-                pendingTrustedConnections = _context.sent;
-                _context.next = 31;
+                pendingTrustedConnections = _context2.sent;
+                _context2.next = 31;
                 return myMailBox.methods.pendingTrustedPublicKeys().call();
 
               case 31:
-                pendingTrustedPublicKeys = _context.sent;
+                pendingTrustedPublicKeys = _context2.sent;
+                console.log(trustedConnections);
                 myTrustedKeys = [];
                 i = 0;
 
-              case 34:
+              case 35:
                 if (!(i < trustedConnections.length)) {
-                  _context.next = 42;
+                  _context2.next = 43;
                   break;
                 }
 
-                _context.next = 37;
+                _context2.next = 38;
                 return myMailBox.methods.myTrustedPublicKeys(i).call();
 
-              case 37:
-                key = _context.sent;
+              case 38:
+                key = _context2.sent;
                 myTrustedKeys[i] = key;
 
-              case 39:
+              case 40:
                 i++;
-                _context.next = 34;
+                _context2.next = 35;
                 break;
 
-              case 42:
+              case 43:
                 messages = [];
                 i = 0;
 
-              case 44:
+              case 45:
                 if (!(i < numMessages)) {
-                  _context.next = 52;
+                  _context2.next = 53;
                   break;
                 }
 
-                _context.next = 47;
+                _context2.next = 48;
                 return myMailBox.methods.mailbox(i).call();
 
-              case 47:
-                message = _context.sent;
+              case 48:
+                message = _context2.sent;
                 messages[i] = message;
 
-              case 49:
+              case 50:
                 i++;
-                _context.next = 44;
+                _context2.next = 45;
                 break;
 
-              case 52:
+              case 53:
                 managerLogIn = false;
 
                 if (accounts[0] == me) {
                   managerLogIn = true;
                 }
 
-                return _context.abrupt("return", {
+                return _context2.abrupt("return", {
                   myMailBox: myMailBox,
                   mailBoxAddress: mailBoxAddress,
                   userName: userName,
@@ -1310,15 +1425,15 @@ function (_Component) {
                   pendingTrustedConnections: pendingTrustedConnections
                 });
 
-              case 55:
+              case 56:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee);
+        }, _callee2);
       }));
 
-      function getInitialProps(_x) {
+      function getInitialProps(_x2) {
         return _getInitialProps.apply(this, arguments);
       }
 

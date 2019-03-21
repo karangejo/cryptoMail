@@ -23,7 +23,7 @@ class ManageMailBox extends Component {
     const pendingTrustedMailboxes = await myMailBox.methods.pendingTrustedMailboxes().call();
     const pendingTrustedConnections = await myMailBox.methods.pendingTrustedConnections().call();
     const pendingTrustedPublicKeys = await myMailBox.methods.pendingTrustedPublicKeys().call();
-
+    console.log(trustedConnections);
     var myTrustedKeys = [];
     for(var i=0;i<trustedConnections.length;i++){
       var key = await myMailBox.methods.myTrustedPublicKeys(i).call();
@@ -72,6 +72,15 @@ class ManageMailBox extends Component {
       this.setState({showDecryptedMessages:true})
     }
 
+    deleteMessages = async (event) => {
+      event.preventDefault();
+      try{
+        await myMailBox.methods.deleteMessage().send({from:accounts[0]});
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+
 
   renderForManager(){
     return(
@@ -82,7 +91,11 @@ class ManageMailBox extends Component {
       <h5>Number of Messages: {this.props.numMessages}</h5>
       <h5>My Public Key: <br/><small>{this.props.myPublicKey}</small></h5>
       <h5>Number of Trusted Connections: {this.props.trustedConnections.length}</h5>
-      <ShowPending pendingTrustedMailboxes={this.props.pendingTrustedMailboxes} pendingTrustedPublicKeys={this.props.pendingTrustedPublicKeys} pendingTrustedConnections={this.props.pendingTrustedConnections}/>
+      <ShowPending mailBoxAddress={this.props.mailBoxAddress} pendingTrustedMailboxes={this.props.pendingTrustedMailboxes} pendingTrustedPublicKeys={this.props.pendingTrustedPublicKeys} pendingTrustedConnections={this.props.pendingTrustedConnections}/>
+      </Segment>
+      <Segment raised={true} color="black">
+      <h1>Delete Oldest Message</h1>
+      <Button primary onClick={this.deleteMessages}>Delete</Button>
       </Segment>
       <Segment raised={true} color="purple">
       <h1>Encrypted Inbox</h1>

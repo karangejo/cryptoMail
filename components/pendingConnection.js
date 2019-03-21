@@ -5,6 +5,11 @@ import mailBox from '../ethereum/mailBox';
 
 class ShowPending extends Component {
 
+  state = {
+    approved: null,
+    message: '',
+  }
+
   static async getInitialProps(props) {
 
   const pendingTrustedMailboxes = this.props.pendingTrustedMailboxes;
@@ -18,12 +23,31 @@ class ShowPending extends Component {
 
   approveConnection = async (event) => {
     event.preventDefault();
-  
+    console.log("approving COnnection");
+    try{
+      const accounts = await web3.eth.getAccounts();
+      const mailbox = mailBox(this.props.mailBoxAddress);
+      await mailbox.methods.approveConnection().send({from:accounts[0]});
+      this.setState({approved: true});
+      Router.pushRoute(`/mailBox/${this.props.mailBoxAddress}/manage`);
+    } catch (err) {
+      this.setState({errorMessage: err.message});
+      console.log(err.message);
+    }
   }
 
   disapproveConnection = async (event) => {
     event.preventDefault();
-
+    try{
+      const accounts = await web3.eth.getAccounts();
+      const mailbox = mailBox(this.props.mailBoxAddress);
+      await mailbox.methods.disapproveConnection().send({from:accounts[0]});
+      this.setState({approved: false});
+      Router.pushRoute(`/mailBox/${this.props.mailBoxAddress}/manage`);
+    } catch (err) {
+      this.setState({errorMessage: err.message});
+      console.log(err.message);
+    }
   }
 
   renderPendingConnection() {
